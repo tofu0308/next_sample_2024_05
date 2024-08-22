@@ -47,3 +47,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 - [Next.js 12 で Jest の設定がかなり楽になった](https://zenn.dev/miruoon_892/articles/e42e64fbb55137)
 - [jest でテストカバレッジを見る](https://qiita.com/monisoi/items/44931e36c5f7b1f4e683)
+
+### ToDo
+
+[React と TypeScript で簡単 TODO アプリ](https://zenn.dev/sprout2000/articles/40328708afaeb9)

@@ -1,5 +1,5 @@
-import Counter from '../components/Counter/Counter';
+import ToDo from '../components/ToDo';
 
 export default function Page() {
-  return <Counter />;
+  return <ToDo />;
 }
