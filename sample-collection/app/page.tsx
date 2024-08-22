@@ -15,6 +15,11 @@ export default function Home() {
           counter
         </Typography>
       </MuiLink>
+      <MuiLink component={Link} href="/todo" underline="none">
+        <Typography variant="inherit" component="div">
+          todo
+        </Typography>
+      </MuiLink>
     </>
   );
 }
