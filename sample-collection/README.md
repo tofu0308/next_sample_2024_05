@@ -39,4 +39,11 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ## 参考
 
+### mui 導入
+
 - [Nextjs の App Router に Material UI を統合させる](https://qiita.com/KokiSakano/items/2cd9b1488c4f508633fb)
+
+### テスト導入
+
+- [Next.js 12 で Jest の設定がかなり楽になった](https://zenn.dev/miruoon_892/articles/e42e64fbb55137)
+- [jest でテストカバレッジを見る](https://qiita.com/monisoi/items/44931e36c5f7b1f4e683)
