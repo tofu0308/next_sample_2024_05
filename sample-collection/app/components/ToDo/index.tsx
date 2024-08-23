@@ -1,12 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { Stack, Button, Input, Typography, Modal, List, ListItem, ListItemText, Checkbox } from '@mui/material';
+import { Stack, Button, Input, Typography, List, ListItem, Checkbox } from '@mui/material';
+import { Add, Delete, RestoreFromTrash } from '@mui/icons-material';
 
 interface IToDo {
   value: string;
   readonly id: number;
   checked: boolean;
+  removed: boolean;
 }
 
 export default function ToDo() {
@@ -24,6 +26,7 @@ export default function ToDo() {
       value: text,
       id: new Date().getTime(),
       checked: false,
+      removed: false,
     };
     setTodos((todos) => [newTodo, ...todos]);
     setText('');
@@ -57,6 +60,19 @@ export default function ToDo() {
     });
   };
 
+  const handleRemove = (id: number, removed: boolean) => {
+    setTodos((todos) => {
+      const newTodos = todos.map((todo) => {
+        if (todo.id === id) {
+          return { ...todo, removed };
+        }
+        return todo;
+      });
+
+      return newTodos;
+    });
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setText(e.target.value);
   };
@@ -74,7 +90,7 @@ export default function ToDo() {
       >
         <Input type="text" value={text} onChange={(e) => handleChange(e)} />
         <Button type="submit" onSubmit={handleSubmit}>
-          ADD
+          <Add />
         </Button>
       </form>
       <Stack>
@@ -95,13 +111,16 @@ export default function ToDo() {
         {todos.map((todo) => {
           return (
             <ListItem sx={{ padding: '16px 0' }} key={todo.id}>
-              <Checkbox checked={todo.checked} onChange={() => handleCheck(todo.id, !todo.checked)} />
+              <Checkbox disabled={todo.removed} checked={todo.checked} onChange={() => handleCheck(todo.id, !todo.checked)} />
               <Input
                 type="text"
-                disabled={todo.checked}
+                disabled={todo.checked || todo.removed}
                 value={todo.value}
                 onChange={(e) => handleEdit(todo.id, e.target.value)}
               />
+              <Button onClick={() => handleRemove(todo.id, !todo.removed)}>
+                {todo.removed ? <RestoreFromTrash /> : <Delete sx={{ color: '#666' }} />}
+              </Button>
             </ListItem>
           );
         })}
