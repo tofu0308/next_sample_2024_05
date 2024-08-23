@@ -1,11 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { Stack, Button, Input, Typography, Modal, List, ListItem, ListItemText } from '@mui/material';
+import { Stack, Button, Input, Typography, Modal, List, ListItem, ListItemText, Checkbox } from '@mui/material';
 
 interface IToDo {
   value: string;
   readonly id: number;
+  checked: boolean;
 }
 
 export default function ToDo() {
@@ -22,6 +23,7 @@ export default function ToDo() {
     const newTodo: IToDo = {
       value: text,
       id: new Date().getTime(),
+      checked: false,
     };
     setTodos((todos) => [newTodo, ...todos]);
     setText('');
@@ -38,6 +40,19 @@ export default function ToDo() {
       });
 
       // todos ステートを更新
+      return newTodos;
+    });
+  };
+
+  const handleCheck = (id: number, checked: boolean) => {
+    setTodos((todos) => {
+      const newTodos = todos.map((todo) => {
+        if (todo.id === id) {
+          return { ...todo, checked };
+        }
+        return todo;
+      });
+
       return newTodos;
     });
   };
@@ -80,6 +95,7 @@ export default function ToDo() {
         {todos.map((todo) => {
           return (
             <ListItem sx={{ padding: '16px 0' }} key={todo.id}>
+              <Checkbox checked={todo.checked} onChange={() => handleCheck(todo.id, !todo.checked)} />
               <Input type="text" value={todo.value} onChange={(e) => handleEdit(todo.id, e.target.value)} />
             </ListItem>
           );
