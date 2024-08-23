@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Stack, Button, Input, Typography, List, ListItem, Checkbox, Select, MenuItem } from '@mui/material';
-import { Add, Delete, RestoreFromTrash } from '@mui/icons-material';
+import { Add, Delete, DeleteOutline, RestoreFromTrash } from '@mui/icons-material';
 
 interface IToDo {
   value: string;
@@ -98,6 +98,10 @@ export default function ToDo() {
     setText(e.target.value);
   };
 
+  const handleEmpty = () => {
+    setTodos((todos) => todos.filter((todo) => !todo.removed));
+  };
+
   return (
     <Stack sx={{ marginTop: '32px' }} height="100lvh" justifyContent="" alignItems="center" gap="32px">
       <Typography variant="inherit" component="div">
@@ -110,23 +114,27 @@ export default function ToDo() {
         <MenuItem value="unchecked">現在のタスク</MenuItem>
         <MenuItem value="removed">ごみ箱</MenuItem>
       </Select>
-
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSubmit();
-        }}
-      >
-        <Input
-          type="text"
-          value={text}
-          disabled={filter === 'checked' || filter === 'removed'}
-          onChange={(e) => handleChange(e)}
-        />
-        <Button type="submit" disabled={filter === 'checked' || filter === 'removed'} onSubmit={handleSubmit}>
-          <Add />
+      {filter === 'removed' ? (
+        <Button onClick={handleEmpty} disabled={todos.filter((todo) => todo.removed).length === 0}>
+          <DeleteOutline />
+          ごみ箱を空にする
         </Button>
-      </form>
+      ) : (
+        filter !== 'checked' && (
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}
+          >
+            <Input type="text" value={text} onChange={(e) => handleChange(e)} />
+            <Button type="submit" onSubmit={handleSubmit}>
+              <Add />
+            </Button>
+          </form>
+        )
+      )}
+
       <Stack>
         {alertText && (
           <Typography variant="inherit" component="p" color="red">
