@@ -96,7 +96,12 @@ export default function ToDo() {
           return (
             <ListItem sx={{ padding: '16px 0' }} key={todo.id}>
               <Checkbox checked={todo.checked} onChange={() => handleCheck(todo.id, !todo.checked)} />
-              <Input type="text" value={todo.value} onChange={(e) => handleEdit(todo.id, e.target.value)} />
+              <Input
+                type="text"
+                disabled={todo.checked}
+                value={todo.value}
+                onChange={(e) => handleEdit(todo.id, e.target.value)}
+              />
             </ListItem>
           );
         })}
