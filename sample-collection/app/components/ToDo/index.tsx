@@ -50,40 +50,14 @@ export default function ToDo() {
     setAlertText('');
   };
 
-  const handleEdit = (id: number, value: string) => {
+  const handleTodo = <K extends keyof IToDo, V extends IToDo[K]>(id: number, key: K, value: V) => {
     setTodos((todos) => {
       const newTodos = todos.map((todo) => {
         if (todo.id === id) {
-          return { ...todo, value: value };
+          return { ...todo, [key]: value };
+        } else {
+          return todo;
         }
-        return todo;
-      });
-
-      // todos ステートを更新
-      return newTodos;
-    });
-  };
-
-  const handleCheck = (id: number, checked: boolean) => {
-    setTodos((todos) => {
-      const newTodos = todos.map((todo) => {
-        if (todo.id === id) {
-          return { ...todo, checked };
-        }
-        return todo;
-      });
-
-      return newTodos;
-    });
-  };
-
-  const handleRemove = (id: number, removed: boolean) => {
-    setTodos((todos) => {
-      const newTodos = todos.map((todo) => {
-        if (todo.id === id) {
-          return { ...todo, removed };
-        }
-        return todo;
       });
 
       return newTodos;
@@ -153,14 +127,18 @@ export default function ToDo() {
         {filteredTodos.map((todo) => {
           return (
             <ListItem sx={{ padding: '16px 0' }} key={todo.id}>
-              <Checkbox disabled={todo.removed} checked={todo.checked} onChange={() => handleCheck(todo.id, !todo.checked)} />
+              <Checkbox
+                disabled={todo.removed}
+                checked={todo.checked}
+                onChange={() => handleTodo(todo.id, 'checked', !todo.checked)}
+              />
               <Input
                 type="text"
                 disabled={todo.checked || todo.removed}
                 value={todo.value}
-                onChange={(e) => handleEdit(todo.id, e.target.value)}
+                onChange={(e) => handleTodo(todo.id, 'value', e.target.value)}
               />
-              <Button onClick={() => handleRemove(todo.id, !todo.removed)}>
+              <Button onClick={() => handleTodo(todo.id, 'removed', !todo.removed)}>
                 {todo.removed ? <RestoreFromTrash /> : <Delete sx={{ color: '#666' }} />}
               </Button>
             </ListItem>
