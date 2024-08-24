@@ -83,7 +83,7 @@ export default function ToDo() {
   return (
     <Stack sx={{ marginTop: '32px' }} height="100lvh" justifyContent="" alignItems="center" gap="32px">
       <Typography variant="inherit" component="div">
-        ToDO
+        ToDo
       </Typography>
 
       <Select defaultValue="all" onChange={(e) => handleFilter(e.target.value as Filter)}>
