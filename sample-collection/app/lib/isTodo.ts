@@ -1,3 +1,5 @@
+import { IToDo } from '../components/ToDo/ToDo';
+
 const isTodo = (arg: any): arg is IToDo => {
   return (
     typeof arg === 'object' &&

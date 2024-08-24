@@ -6,6 +6,14 @@ import { Add, Delete, DeleteOutline, RestoreFromTrash } from '@mui/icons-materia
 import localforage from 'localforage';
 import { isTodos } from '../../lib/isTodo';
 
+export interface IToDo {
+  value: string;
+  readonly id: number;
+  checked: boolean;
+  removed: boolean;
+}
+type Filter = 'all' | 'checked' | 'unchecked' | 'removed';
+
 export default function ToDo() {
   const [text, setText] = useState('');
   const [alertText, setAlertText] = useState('');
