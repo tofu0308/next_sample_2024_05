@@ -17,6 +17,17 @@ describe('ToDo', () => {
       expect(getByText('すべてのタスク')).toBeInTheDocument();
     });
 
+    test('ToDo登録用のtextbox、追加ボタンが表示される', () => {
+      render(<ToDo />);
+      const textbox = screen.getByRole('textbox');
+      const button = screen.getByRole('button');
+
+      expect(textbox).toBeInTheDocument();
+      expect(button).toBeInTheDocument();
+    });
+  });
+
+  describe('プルダウン操作と絞り込みの実行', () => {
     test('SelectBoxを操作し"完了したタスク"を表示できる', async () => {
       const event = userEvent.setup();
       const content = render(<ToDo />);
