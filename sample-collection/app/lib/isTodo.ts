@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 const isTodo = (arg: any): arg is IToDo => {
   return (
     typeof arg === 'object' &&
