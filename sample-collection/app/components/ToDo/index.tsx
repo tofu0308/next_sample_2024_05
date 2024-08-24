@@ -1,22 +1,26 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Stack, Button, Input, Typography, List, ListItem, Checkbox, Select, MenuItem } from '@mui/material';
 import { Add, Delete, DeleteOutline, RestoreFromTrash } from '@mui/icons-material';
-
-interface IToDo {
-  value: string;
-  readonly id: number;
-  checked: boolean;
-  removed: boolean;
-}
-type Filter = 'all' | 'checked' | 'unchecked' | 'removed';
+import localforage from 'localforage';
+import { isTodos } from '../../lib/isTodo';
 
 export default function ToDo() {
   const [text, setText] = useState('');
   const [alertText, setAlertText] = useState('');
   const [todos, setTodos] = useState<IToDo[]>([]);
   const [filter, setFilter] = useState<Filter>('all');
+
+  // キー名 'todo-20200101' のデータを取得
+  useEffect(() => {
+    localforage.getItem('todo-20200101').then((values) => isTodos(values) && setTodos(values));
+  }, []);
+
+  // State更新時の保存
+  useEffect(() => {
+    localforage.setItem('todo-20200101', todos);
+  }, [todos]);
 
   const filteredTodos = todos.filter((todo) => {
     // filter ステートの値に応じて異なる内容の配列を返す
