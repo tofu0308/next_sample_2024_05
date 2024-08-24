@@ -47,6 +47,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 - [Next.js 12 で Jest の設定がかなり楽になった](https://zenn.dev/miruoon_892/articles/e42e64fbb55137)
 - [jest でテストカバレッジを見る](https://qiita.com/monisoi/items/44931e36c5f7b1f4e683)
+- [Testing Library で複数の<option>を選択する<selectbox>のテストを記載する](https://rimarimadan.hatenablog.com/entry/2024/02/23/200000)
+- [material ui の select のテスト]https://scrapbox.io/haruharu/material_ui%E3%81%AEselect%E3%81%AE%E3%83%86%E3%82%B9%E3%83%88)
 
 ### ToDo
 
