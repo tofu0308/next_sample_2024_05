@@ -30,14 +30,14 @@ describe('ToDo', () => {
   describe('プルダウン操作と絞り込みの実行', () => {
     test('SelectBoxを操作し"完了したタスク"を表示できる', async () => {
       const event = userEvent.setup();
-      const content = render(<ToDo />);
+      render(<ToDo />);
 
       await event.click(screen.getByRole('combobox'));
       await waitFor(async () => await event.click(screen.getByText(/完了したタスク/i)));
     });
     test('SelectBoxを操作し"現在のタスク"を表示できる', async () => {
       const event = userEvent.setup();
-      const content = render(<ToDo />);
+      render(<ToDo />);
 
       await event.click(screen.getByRole('combobox'));
       await waitFor(async () => await event.click(screen.getByText(/現在のタスク/i)));
@@ -45,10 +45,21 @@ describe('ToDo', () => {
 
     test('SelectBoxを操作し"ごみ箱"を表示できる', async () => {
       const event = userEvent.setup();
-      const content = render(<ToDo />);
+      render(<ToDo />);
 
       await event.click(screen.getByRole('combobox'));
       await waitFor(async () => await event.click(screen.getByText(/ごみ箱/i)));
+    });
+  });
+  describe('handleSubmit', () => {
+    test('未入力でのToDo追加時に"1文字以上で入力してください"が表示される', async () => {
+      render(<ToDo />);
+      const button = screen.getByRole('button');
+      await userEvent.click(button);
+
+      await waitFor(async () => {
+        await expect(screen.getByText('1文字以上で入力してください'));
+      });
     });
   });
 });
