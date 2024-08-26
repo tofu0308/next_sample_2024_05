@@ -102,6 +102,35 @@ describe('ToDo', () => {
       expect(screen.getByDisplayValue('Task 01')).toBeInTheDocument();
     });
 
+    test('複数のタスクが登録できること', async () => {
+      const event = userEvent.setup();
+      render(<ToDo />);
+
+      const input = screen.getByRole('textbox');
+      const button = screen.getByRole('button');
+      await event.type(input, 'Task 01');
+      await event.click(button);
+
+      await event.type(input, 'Task 02');
+      await event.click(button);
+
+      expect(screen.queryAllByRole('listitem')).toHaveLength(2);
+      expect(screen.getByDisplayValue('Task 01')).toBeInTheDocument();
+      expect(screen.getByDisplayValue('Task 02')).toBeInTheDocument();
+    });
+    test('登録されたタスクの内容を変更できること', async () => {
+      const event = userEvent.setup();
+      render(<ToDo />);
+
+      const input = screen.getByRole('textbox');
+      const button = screen.getByRole('button');
+      await event.type(input, 'Task 01');
+      await event.click(button);
+
+      // ここを取得する方法から考える
+      screen.debug();
+    });
+
     test('タスク登録時にtextboxが空欄になること', async () => {
       const event = userEvent.setup();
       render(<ToDo />);
@@ -121,6 +150,14 @@ describe('ToDo', () => {
       await event.click(button);
 
       expect(screen.getByText('1文字以上で入力してください'));
+    });
+  });
+
+  describe('タスクのステータスを変更する', () => {
+    test('タスクを完了状態にできること', async () => {
+      //　生成された要素の取得方法
+      // checkboxの選択
+      // 状態確認
     });
   });
 });
