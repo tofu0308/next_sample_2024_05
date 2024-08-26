@@ -85,9 +85,7 @@ describe('ToDo', () => {
       const button = screen.getByRole('button');
       await userEvent.click(button);
 
-      await waitFor(async () => {
-        await expect(screen.getByText('1文字以上で入力してください'));
-      });
+      expect(screen.getByText('1文字以上で入力してください'));
     });
   });
 });
