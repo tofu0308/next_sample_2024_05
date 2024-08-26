@@ -5,6 +5,9 @@ import userEvent from '@testing-library/user-event';
 
 import ToDo from './ToDo';
 
+// mock
+jest.spyOn(Storage.prototype, 'getItem').mockImplementation(jest.fn());
+
 describe('ToDo', () => {
   describe('コンポーネントが正しくレンダリングされる', () => {
     test('タイトルとして"ToDo"が表示される', () => {
@@ -79,11 +82,18 @@ describe('ToDo', () => {
     });
   });
 
-  describe('handleSubmit', () => {
+  describe('タスクの登録', () => {
+    test('未登録時のToDoタスク数が0であること', () => {
+      render(<ToDo />);
+
+      expect(screen.queryAllByRole('listitem')).toHaveLength(0);
+    });
+
     test('未入力でのToDo追加時に"1文字以上で入力してください"が表示される', async () => {
+      const event = userEvent.setup();
       render(<ToDo />);
       const button = screen.getByRole('button');
-      await userEvent.click(button);
+      await event.click(button);
 
       expect(screen.getByText('1文字以上で入力してください'));
     });
