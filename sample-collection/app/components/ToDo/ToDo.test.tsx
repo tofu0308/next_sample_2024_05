@@ -89,6 +89,31 @@ describe('ToDo', () => {
       expect(screen.queryAllByRole('listitem')).toHaveLength(0);
     });
 
+    test('未登録状態からタスク登録すると、1件のToDoが表示されること', async () => {
+      const event = userEvent.setup();
+      render(<ToDo />);
+
+      const input = screen.getByRole('textbox');
+      const button = screen.getByRole('button');
+      await event.type(input, 'Task 01');
+      await event.click(button);
+
+      expect(screen.queryAllByRole('listitem')).toHaveLength(1);
+      expect(screen.getByDisplayValue('Task 01')).toBeInTheDocument();
+    });
+
+    test('タスク登録時にtextboxが空欄になること', async () => {
+      const event = userEvent.setup();
+      render(<ToDo />);
+
+      const input = screen.getByRole('textbox');
+      const button = screen.getByRole('button');
+      await event.type(input, 'Task 01');
+      await event.click(button);
+
+      expect(input).toHaveValue('');
+    });
+
     test('未入力でのToDo追加時に"1文字以上で入力してください"が表示される', async () => {
       const event = userEvent.setup();
       render(<ToDo />);
