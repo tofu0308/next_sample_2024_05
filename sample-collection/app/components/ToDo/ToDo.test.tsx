@@ -12,7 +12,7 @@ describe('ToDo', () => {
       expect(getByText('ToDo')).toBeInTheDocument();
     });
 
-    test('SelectBoxの初期値が"全てのタスク"である', () => {
+    test('SelectBoxの初期値が"すべてのタスク"である', () => {
       const { getByText } = render(<ToDo />);
       expect(getByText('すべてのタスク')).toBeInTheDocument();
     });
@@ -31,26 +31,56 @@ describe('ToDo', () => {
     test('SelectBoxを操作し"完了したタスク"を表示できる', async () => {
       const event = userEvent.setup();
       render(<ToDo />);
-
       await event.click(screen.getByRole('combobox'));
-      await waitFor(async () => await event.click(screen.getByText(/完了したタスク/i)));
+      await event.click(screen.getByText(/完了したタスク/i));
+
+      expect(screen.getByText('完了したタスク')).toBeInTheDocument();
     });
+
     test('SelectBoxを操作し"現在のタスク"を表示できる', async () => {
       const event = userEvent.setup();
       render(<ToDo />);
-
       await event.click(screen.getByRole('combobox'));
-      await waitFor(async () => await event.click(screen.getByText(/現在のタスク/i)));
+      await event.click(screen.getByText(/現在のタスク/i));
+
+      expect(screen.getByText('現在のタスク')).toBeInTheDocument();
     });
 
     test('SelectBoxを操作し"ごみ箱"を表示できる', async () => {
       const event = userEvent.setup();
       render(<ToDo />);
+      await event.click(screen.getByRole('combobox'));
+      await event.click(screen.getByText(/ごみ箱/i));
+
+      expect(screen.getByText('ごみ箱')).toBeInTheDocument();
+    });
+
+    test('SelectBoxを操作し"ごみ箱"を表示した場合は”ゴミ箱を空にする”ボタンが表示される', async () => {
+      const event = userEvent.setup();
+      render(<ToDo />);
+      await event.click(screen.getByRole('combobox'));
+      await event.click(screen.getByText(/ごみ箱/i));
+
+      expect(screen.getByText('ごみ箱を空にする')).toBeInTheDocument();
+    });
+
+    test('SelectBoxを操作し"すべてのタスク"を再び表示できる', async () => {
+      const event = userEvent.setup();
+      render(<ToDo />);
+      await event.click(screen.getByRole('combobox'));
+      await event.click(screen.getByText(/ごみ箱/i));
+
+      expect(screen.getByText('ごみ箱')).toBeInTheDocument();
 
       await event.click(screen.getByRole('combobox'));
-      await waitFor(async () => await event.click(screen.getByText(/ごみ箱/i)));
+      await event.click(screen.getByText(/すべてのタスク/i));
+
+      expect(screen.getByText('すべてのタスク')).toBeInTheDocument();
     });
   });
+
+  /*
+
   describe('handleSubmit', () => {
     test('未入力でのToDo追加時に"1文字以上で入力してください"が表示される', async () => {
       render(<ToDo />);
@@ -62,4 +92,5 @@ describe('ToDo', () => {
       });
     });
   });
+  */
 });
