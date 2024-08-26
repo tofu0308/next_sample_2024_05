@@ -79,8 +79,6 @@ describe('ToDo', () => {
     });
   });
 
-  /*
-
   describe('handleSubmit', () => {
     test('未入力でのToDo追加時に"1文字以上で入力してください"が表示される', async () => {
       render(<ToDo />);
@@ -92,5 +90,4 @@ describe('ToDo', () => {
       });
     });
   });
-  */
 });
