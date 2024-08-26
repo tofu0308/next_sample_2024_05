@@ -118,7 +118,7 @@ describe('ToDo', () => {
       expect(screen.getByDisplayValue('Task 01')).toBeInTheDocument();
       expect(screen.getByDisplayValue('Task 02')).toBeInTheDocument();
     });
-    test('登録されたタスクの内容を変更できること', async () => {
+    test('[WIP]登録されたタスクの内容を変更できること', async () => {
       const event = userEvent.setup();
       render(<ToDo />);
 
@@ -154,7 +154,7 @@ describe('ToDo', () => {
   });
 
   describe('タスクのステータスを変更する', () => {
-    test('タスクを完了状態にできること', async () => {
+    test('[WIP]タスクを完了状態にできること', async () => {
       //　生成された要素の取得方法
       // checkboxの選択
       // 状態確認
