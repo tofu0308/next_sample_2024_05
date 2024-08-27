@@ -182,5 +182,49 @@ describe('ToDo', () => {
       expect(todoCheckbox).toBeChecked();
       expect(todoInput).toBeDisabled();
     });
+
+    test('登録済みタスクを削除（ゴミ箱へ移動）できること', async () => {
+      const event = userEvent.setup();
+      render(<ToDo />);
+
+      const input = screen.getByRole('textbox');
+      const button = screen.getByRole('button');
+      await event.type(input, 'Task 01');
+      await event.click(button);
+
+      const list = screen.getAllByRole('list');
+      const todoRemoveButton = list[0].querySelectorAll('button')[0];
+
+      // 削除ボタン押下前には要素が存在すること
+      expect(screen.queryAllByRole('listitem')).toHaveLength(1);
+      await event.click(todoRemoveButton);
+
+      // 該当要素が消えたこと
+      expect(screen.queryAllByRole('listitem')).toHaveLength(0);
+    });
+
+    test('完了済みタスクを削除（ゴミ箱へ移動）できること', async () => {
+      const event = userEvent.setup();
+      render(<ToDo />);
+
+      const input = screen.getByRole('textbox');
+      const button = screen.getByRole('button');
+      await event.type(input, 'Task 01');
+      await event.click(button);
+
+      const list = screen.getAllByRole('list');
+      const todoCheckbox = list[0].querySelectorAll('input')[0];
+      const todoRemoveButton = list[0].querySelectorAll('button')[0];
+
+      // checkboxのチェック(タスクを完了させる)
+      await event.click(todoCheckbox);
+
+      // 削除ボタン押下前には要素が存在すること
+      expect(screen.queryAllByRole('listitem')).toHaveLength(1);
+      await event.click(todoRemoveButton);
+
+      // 該当要素が消えたこと
+      expect(screen.queryAllByRole('listitem')).toHaveLength(0);
+    });
   });
 });
