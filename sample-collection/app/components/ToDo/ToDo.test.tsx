@@ -138,6 +138,10 @@ describe('ToDo', () => {
       const input = screen.getByRole('textbox');
       const button = screen.getByRole('button');
       await event.type(input, 'Task 01');
+
+      // 追加ボタン押下前にtextboxが保持する値の確認
+      expect(input).toHaveValue('Task 01');
+
       await event.click(button);
 
       expect(input).toHaveValue('');
