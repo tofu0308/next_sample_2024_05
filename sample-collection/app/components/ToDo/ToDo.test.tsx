@@ -303,7 +303,6 @@ describe('ToDo', () => {
 
       const list = screen.getAllByRole('list');
       const todoCheckbox = list[0].querySelectorAll('input')[0];
-      const todoInput = list[0].querySelectorAll('input')[1];
 
       // checkboxのチェック(タスクを完了させる)
       await event.click(todoCheckbox);
@@ -337,7 +336,7 @@ describe('ToDo', () => {
   });
 
   describe('ごみ箱の操作', () => {
-    test('ごみ箱にタスクがないときは”ごみ箱を空にするボタンが非活性であること”', async () => {
+    test('ごみ箱にタスクがないときは”ごみ箱を空にする”ボタンが非活性であること', async () => {
       const event = userEvent.setup();
       render(<ToDo />);
 
@@ -353,7 +352,7 @@ describe('ToDo', () => {
       expect(emptyTrashButton).toBeDisabled();
     });
 
-    test('ごみ箱にタスクがあるときは”ごみ箱を空にするボタンが活性状態になること”', async () => {
+    test('ごみ箱にタスクがあるときは”ごみ箱を空にする”ボタンが活性状態になること', async () => {
       const event = userEvent.setup();
       render(<ToDo />);
 
@@ -374,11 +373,83 @@ describe('ToDo', () => {
       expect(screen.queryAllByRole('listitem')).toHaveLength(1);
 
       const emptyTrashButton = screen.getAllByRole('button')[0];
-      screen.debug(emptyTrashButton);
 
-      screen.debug(emptyTrashButton);
       expect(emptyTrashButton).toHaveTextContent('ごみ箱を空にする');
       expect(emptyTrashButton).not.toBeDisabled();
+    });
+    test('活性状態の”ごみ箱を空にする”ことで、ゴミ箱内のタスクが削除され、再びボタンが非活性になること', async () => {
+      const event = userEvent.setup();
+      render(<ToDo />);
+
+      const input = screen.getByRole('textbox');
+      const button = screen.getByRole('button');
+      await event.type(input, 'Task 01');
+      await event.click(button);
+
+      const list = screen.getAllByRole('list');
+      const todoRemoveButton = list[0].querySelectorAll('button')[0];
+
+      await event.click(todoRemoveButton);
+
+      await event.click(screen.getByRole('combobox'));
+      await event.click(screen.getByText(/ごみ箱/i));
+
+      // ごみ箱にタスクがあることの確認
+      expect(screen.queryAllByRole('listitem')).toHaveLength(1);
+
+      const emptyTrashButton = screen.getAllByRole('button')[0];
+
+      await event.click(emptyTrashButton);
+      // ごみ箱にタスクがないことの確認
+      expect(screen.queryAllByRole('listitem')).toHaveLength(0);
+
+      // 再びボタンが非活性化することの確認
+      expect(emptyTrashButton).toBeDisabled();
+    });
+
+    test('”ごみ箱を空にする”ボタンで複数のタスクを一括削除できること', async () => {
+      const event = userEvent.setup();
+      render(<ToDo />);
+
+      const input = screen.getByRole('textbox');
+      const button = screen.getByRole('button');
+
+      await event.type(input, 'Task 01');
+      await event.click(button);
+      await event.type(input, 'Task 02');
+      await event.click(button);
+      await event.type(input, 'Task 03');
+      await event.click(button);
+
+      const list = screen.getAllByRole('list');
+      let todoRemoveButton = list[0].querySelectorAll('button')[0];
+
+      await event.click(todoRemoveButton);
+
+      // タスクの削除処理後にボタンを再取得する
+      todoRemoveButton = list[0].querySelectorAll('button')[0];
+      await event.click(todoRemoveButton);
+
+      todoRemoveButton = list[0].querySelectorAll('button')[0];
+      await event.click(todoRemoveButton);
+
+      // 全てのタスクが消えたことを確認
+      expect(screen.queryAllByRole('listitem')).toHaveLength(0);
+
+      await event.click(screen.getByRole('combobox'));
+      await event.click(screen.getByText(/ごみ箱/i));
+
+      // ごみ箱に複数のタスクがあることの確認
+      expect(screen.queryAllByRole('listitem')).toHaveLength(3);
+
+      const emptyTrashButton = screen.getAllByRole('button')[0];
+
+      await event.click(emptyTrashButton);
+      // ごみ箱にタスクがないことの確認
+      expect(screen.queryAllByRole('listitem')).toHaveLength(0);
+
+      // 再びボタンが非活性化することの確認
+      expect(emptyTrashButton).toBeDisabled();
     });
   });
 });
