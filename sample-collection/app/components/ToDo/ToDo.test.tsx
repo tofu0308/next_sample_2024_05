@@ -144,7 +144,6 @@ describe('ToDo', () => {
       const input = screen.getByRole('textbox');
       const button = screen.getByRole('button');
       await event.type(input, 'Task 01');
-
       // 追加ボタン押下前にtextboxが保持する値の確認
       expect(input).toHaveValue('Task 01');
 
@@ -164,12 +163,24 @@ describe('ToDo', () => {
   });
 
   describe('タスクのステータスを変更する', () => {
-    /*
-    test('[WIP]タスクを完了状態にできること', async () => {
-      //　生成された要素の取得方法
-      // checkboxの選択
-      // 状態確認
+    test('登録されたタスクをチェックすることで完了状態にできること', async () => {
+      const event = userEvent.setup();
+      render(<ToDo />);
+
+      const input = screen.getByRole('textbox');
+      const button = screen.getByRole('button');
+      await event.type(input, 'Task 01');
+      await event.click(button);
+
+      const list = screen.getAllByRole('list');
+      const todoCheckbox = list[0].querySelectorAll('input')[0];
+      const todoInput = list[0].querySelectorAll('input')[1];
+
+      // checkboxのチェック
+      await event.click(todoCheckbox);
+
+      expect(todoCheckbox).toBeChecked();
+      expect(todoInput).toBeDisabled();
     });
-    */
   });
 });
