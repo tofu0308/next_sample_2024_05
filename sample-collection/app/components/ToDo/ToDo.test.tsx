@@ -118,7 +118,7 @@ describe('ToDo', () => {
       expect(screen.getByDisplayValue('Task 01')).toBeInTheDocument();
       expect(screen.getByDisplayValue('Task 02')).toBeInTheDocument();
     });
-    test('[WIP]登録されたタスクの内容を変更できること', async () => {
+    test('登録されたタスクの内容を変更できること', async () => {
       const event = userEvent.setup();
       render(<ToDo />);
 
@@ -127,8 +127,14 @@ describe('ToDo', () => {
       await event.type(input, 'Task 01');
       await event.click(button);
 
-      // ここを取得する方法から考える
-      screen.debug();
+      const list = screen.getAllByRole('list');
+      const todoInput = list[0].querySelectorAll('input')[1];
+
+      await event.click(todoInput);
+      // 半角スペース込み
+      await event.type(todoInput, ' modified');
+
+      expect(screen.getByDisplayValue('Task 01 modified')).toBeInTheDocument();
     });
 
     test('タスク登録時にtextboxが空欄になること', async () => {
@@ -158,10 +164,12 @@ describe('ToDo', () => {
   });
 
   describe('タスクのステータスを変更する', () => {
+    /*
     test('[WIP]タスクを完了状態にできること', async () => {
       //　生成された要素の取得方法
       // checkboxの選択
       // 状態確認
     });
+    */
   });
 });
