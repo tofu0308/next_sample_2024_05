@@ -58,7 +58,7 @@ describe('ToDo', () => {
       expect(screen.getByText('ごみ箱')).toBeInTheDocument();
     });
 
-    test('SelectBoxを操作し"ごみ箱"を表示した場合は”ゴミ箱を空にする”ボタンが表示される', async () => {
+    test('SelectBoxを操作し"ごみ箱"を表示した場合は”ごみ箱を空にする”ボタンが表示される', async () => {
       const event = userEvent.setup();
       render(<ToDo />);
       await event.click(screen.getByRole('combobox'));
@@ -183,7 +183,7 @@ describe('ToDo', () => {
       expect(todoInput).toBeDisabled();
     });
 
-    test('登録済みタスクを削除（ゴミ箱へ移動）できること', async () => {
+    test('登録済みタスクを削除（ごみ箱へ移動）できること', async () => {
       const event = userEvent.setup();
       render(<ToDo />);
 
@@ -203,7 +203,7 @@ describe('ToDo', () => {
       expect(screen.queryAllByRole('listitem')).toHaveLength(0);
     });
 
-    test('完了済みタスクを削除（ゴミ箱へ移動）できること', async () => {
+    test('完了済みタスクを削除（ごみ箱へ移動）できること', async () => {
       const event = userEvent.setup();
       render(<ToDo />);
 
@@ -225,6 +225,160 @@ describe('ToDo', () => {
 
       // 該当要素が消えたこと
       expect(screen.queryAllByRole('listitem')).toHaveLength(0);
+    });
+  });
+
+  describe('ステータス変更されたタスクを表示する', () => {
+    test('未完了タスクが現在のタスクとして表示されること', async () => {
+      const event = userEvent.setup();
+      render(<ToDo />);
+
+      const input = screen.getByRole('textbox');
+      const button = screen.getByRole('button');
+      await event.type(input, 'Task 01');
+      await event.click(button);
+
+      const list = screen.getAllByRole('list');
+      const todoCheckbox = list[0].querySelectorAll('input')[0];
+      const todoInput = list[0].querySelectorAll('input')[1];
+
+      // 完了したタスクの一覧を表示
+      await event.click(screen.getByRole('combobox'));
+      await event.click(screen.getByText(/現在のタスク/i));
+
+      expect(screen.queryAllByRole('listitem')).toHaveLength(1);
+    });
+
+    test('未完了のタスクは完了したタスクとして表示されないこと', async () => {
+      const event = userEvent.setup();
+      render(<ToDo />);
+
+      const input = screen.getByRole('textbox');
+      const button = screen.getByRole('button');
+      await event.type(input, 'Task 01');
+      await event.click(button);
+
+      const list = screen.getAllByRole('list');
+      const todoCheckbox = list[0].querySelectorAll('input')[0];
+      const todoInput = list[0].querySelectorAll('input')[1];
+
+      // 完了したタスクの一覧を表示
+      await event.click(screen.getByRole('combobox'));
+      await event.click(screen.getByText(/完了したタスク/i));
+
+      expect(screen.queryAllByRole('listitem')).toHaveLength(0);
+    });
+
+    test('完了したタスクを表示できること', async () => {
+      const event = userEvent.setup();
+      render(<ToDo />);
+
+      const input = screen.getByRole('textbox');
+      const button = screen.getByRole('button');
+      await event.type(input, 'Task 01');
+      await event.click(button);
+
+      const list = screen.getAllByRole('list');
+      const todoCheckbox = list[0].querySelectorAll('input')[0];
+      const todoInput = list[0].querySelectorAll('input')[1];
+
+      // checkboxのチェック(タスクを完了させる)
+      await event.click(todoCheckbox);
+
+      // 完了したタスクの一覧を表示
+      await event.click(screen.getByRole('combobox'));
+      await event.click(screen.getByText(/完了したタスク/i));
+
+      expect(screen.queryAllByRole('listitem')).toHaveLength(1);
+    });
+
+    test('完了したタスクは現在のタスクとして表示されないこと', async () => {
+      const event = userEvent.setup();
+      render(<ToDo />);
+
+      const input = screen.getByRole('textbox');
+      const button = screen.getByRole('button');
+      await event.type(input, 'Task 01');
+      await event.click(button);
+
+      const list = screen.getAllByRole('list');
+      const todoCheckbox = list[0].querySelectorAll('input')[0];
+      const todoInput = list[0].querySelectorAll('input')[1];
+
+      // checkboxのチェック(タスクを完了させる)
+      await event.click(todoCheckbox);
+
+      // 完了したタスクの一覧を表示
+      await event.click(screen.getByRole('combobox'));
+      await event.click(screen.getByText(/現在のタスク/i));
+
+      expect(screen.queryAllByRole('listitem')).toHaveLength(0);
+    });
+
+    test('ごみ箱へ移動したタスクを表示できること', async () => {
+      const event = userEvent.setup();
+      render(<ToDo />);
+
+      const input = screen.getByRole('textbox');
+      const button = screen.getByRole('button');
+      await event.type(input, 'Task 01');
+      await event.click(button);
+
+      const list = screen.getAllByRole('list');
+      const todoRemoveButton = list[0].querySelectorAll('button')[0];
+
+      await event.click(todoRemoveButton);
+
+      await event.click(screen.getByRole('combobox'));
+      await event.click(screen.getByText(/ごみ箱/i));
+
+      expect(screen.queryAllByRole('listitem')).toHaveLength(1);
+    });
+  });
+
+  describe('ごみ箱の操作', () => {
+    test('ごみ箱にタスクがないときは”ごみ箱を空にするボタンが非活性であること”', async () => {
+      const event = userEvent.setup();
+      render(<ToDo />);
+
+      await event.click(screen.getByRole('combobox'));
+      await event.click(screen.getByText(/ごみ箱/i));
+
+      // ごみ箱のタスク表示数が０であることの確認
+      expect(screen.queryAllByRole('listitem')).toHaveLength(0);
+
+      const emptyTrashButton = screen.getByRole('button');
+
+      expect(emptyTrashButton).toHaveTextContent('ごみ箱を空にする');
+      expect(emptyTrashButton).toBeDisabled();
+    });
+
+    test('ごみ箱にタスクがあるときは”ごみ箱を空にするボタンが活性状態になること”', async () => {
+      const event = userEvent.setup();
+      render(<ToDo />);
+
+      const input = screen.getByRole('textbox');
+      const button = screen.getByRole('button');
+      await event.type(input, 'Task 01');
+      await event.click(button);
+
+      const list = screen.getAllByRole('list');
+      const todoRemoveButton = list[0].querySelectorAll('button')[0];
+
+      await event.click(todoRemoveButton);
+
+      await event.click(screen.getByRole('combobox'));
+      await event.click(screen.getByText(/ごみ箱/i));
+
+      // ごみ箱にタスクがあることの確認
+      expect(screen.queryAllByRole('listitem')).toHaveLength(1);
+
+      const emptyTrashButton = screen.getAllByRole('button')[0];
+      screen.debug(emptyTrashButton);
+
+      screen.debug(emptyTrashButton);
+      expect(emptyTrashButton).toHaveTextContent('ごみ箱を空にする');
+      expect(emptyTrashButton).not.toBeDisabled();
     });
   });
 });
