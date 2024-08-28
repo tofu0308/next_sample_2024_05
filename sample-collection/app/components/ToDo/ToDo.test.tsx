@@ -31,38 +31,29 @@ describe('ToDo', () => {
   });
 
   describe('プルダウン操作と絞り込みの実行', () => {
-    test('SelectBoxを操作し"完了したタスク"を表示できる', async () => {
+    const setup = async (value: string) => {
       const event = userEvent.setup();
       render(<ToDo />);
       await event.click(screen.getByRole('combobox'));
-      await event.click(screen.getByText(/完了したタスク/i));
+      await event.click(screen.getByText(value));
 
-      expect(screen.getByText('完了したタスク')).toBeInTheDocument();
+      expect(screen.getByText(value)).toBeInTheDocument();
+    };
+
+    test('SelectBoxを操作し"完了したタスク"を表示できる', async () => {
+      await setup('完了したタスク');
     });
 
     test('SelectBoxを操作し"現在のタスク"を表示できる', async () => {
-      const event = userEvent.setup();
-      render(<ToDo />);
-      await event.click(screen.getByRole('combobox'));
-      await event.click(screen.getByText(/現在のタスク/i));
-
-      expect(screen.getByText('現在のタスク')).toBeInTheDocument();
+      await setup('現在のタスク');
     });
 
     test('SelectBoxを操作し"ごみ箱"を表示できる', async () => {
-      const event = userEvent.setup();
-      render(<ToDo />);
-      await event.click(screen.getByRole('combobox'));
-      await event.click(screen.getByText(/ごみ箱/i));
-
-      expect(screen.getByText('ごみ箱')).toBeInTheDocument();
+      await setup('ごみ箱');
     });
 
     test('SelectBoxを操作し"ごみ箱"を表示した場合は”ごみ箱を空にする”ボタンが表示される', async () => {
-      const event = userEvent.setup();
-      render(<ToDo />);
-      await event.click(screen.getByRole('combobox'));
-      await event.click(screen.getByText(/ごみ箱/i));
+      await setup('ごみ箱');
 
       expect(screen.getByText('ごみ箱を空にする')).toBeInTheDocument();
     });
