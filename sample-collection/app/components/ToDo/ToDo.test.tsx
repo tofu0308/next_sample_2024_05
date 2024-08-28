@@ -71,16 +71,20 @@ describe('ToDo', () => {
   });
 
   describe('タスクの登録', () => {
-    test('未登録時のToDoタスク数が0であること', () => {
+    const event = userEvent.setup();
+    beforeEach(() => {
       render(<ToDo />);
+    });
 
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    test('未登録時のToDoタスク数が0であること', () => {
       expect(screen.queryAllByRole('listitem')).toHaveLength(0);
     });
 
     test('未登録状態からタスク登録すると、1件のToDoが表示されること', async () => {
-      const event = userEvent.setup();
-      render(<ToDo />);
-
       const input = screen.getByRole('textbox');
       const button = screen.getByRole('button');
       await event.type(input, 'Task 01');
@@ -91,9 +95,6 @@ describe('ToDo', () => {
     });
 
     test('複数のタスクが登録できること', async () => {
-      const event = userEvent.setup();
-      render(<ToDo />);
-
       const input = screen.getByRole('textbox');
       const button = screen.getByRole('button');
       await event.type(input, 'Task 01');
@@ -107,9 +108,6 @@ describe('ToDo', () => {
       expect(screen.getByDisplayValue('Task 02')).toBeInTheDocument();
     });
     test('登録されたタスクの内容を変更できること', async () => {
-      const event = userEvent.setup();
-      render(<ToDo />);
-
       const input = screen.getByRole('textbox');
       const button = screen.getByRole('button');
       await event.type(input, 'Task 01');
@@ -126,9 +124,6 @@ describe('ToDo', () => {
     });
 
     test('タスク登録時にtextboxが空欄になること', async () => {
-      const event = userEvent.setup();
-      render(<ToDo />);
-
       const input = screen.getByRole('textbox');
       const button = screen.getByRole('button');
       await event.type(input, 'Task 01');
@@ -141,8 +136,6 @@ describe('ToDo', () => {
     });
 
     test('未入力でのToDo追加時に"1文字以上で入力してください"が表示される', async () => {
-      const event = userEvent.setup();
-      render(<ToDo />);
       const button = screen.getByRole('button');
       await event.click(button);
 
