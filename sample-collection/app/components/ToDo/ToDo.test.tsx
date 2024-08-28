@@ -59,13 +59,10 @@ describe('ToDo', () => {
     });
 
     test('SelectBoxを操作し"すべてのタスク"を再び表示できる', async () => {
-      const event = userEvent.setup();
-      render(<ToDo />);
-      await event.click(screen.getByRole('combobox'));
-      await event.click(screen.getByText(/ごみ箱/i));
-
+      await setup('ごみ箱');
       expect(screen.getByText('ごみ箱')).toBeInTheDocument();
 
+      const event = userEvent.setup();
       await event.click(screen.getByRole('combobox'));
       await event.click(screen.getByText(/すべてのタスク/i));
 
