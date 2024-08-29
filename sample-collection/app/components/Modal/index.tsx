@@ -20,7 +20,7 @@ interface IModalProps {
   children: React.ReactNode;
 }
 
-export default function BasicModal({ button, title, children }: IModalProps) {
+export default function BasicModal({ button = 'open modal', title, children }: IModalProps) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
