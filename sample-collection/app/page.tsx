@@ -20,6 +20,11 @@ export default function Home() {
           todo
         </Typography>
       </MuiLink>
+      <MuiLink component={Link} href="/modal" underline="none">
+        <Typography variant="inherit" component="div">
+          modal
+        </Typography>
+      </MuiLink>
     </>
   );
 }
