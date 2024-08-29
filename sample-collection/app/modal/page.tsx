@@ -19,5 +19,5 @@ const SampleText = () => {
 };
 
 export default function Page() {
-  return <BasicModal title="ここはタイトル" children={<SampleText />} />;
+  return <BasicModal button="モーダルを開くボタン" title="ここはタイトル" children={<SampleText />} />;
 }
