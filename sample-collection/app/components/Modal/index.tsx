@@ -33,7 +33,7 @@ export default function BasicModal({ button = 'open modal', title, children }: I
           <Typography id="modal-modal-title" variant="h6" component="h2">
             {title}
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }} component="div">
             {children}
           </Typography>
         </Box>
