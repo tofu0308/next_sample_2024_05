@@ -50,6 +50,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 - [Testing Library で複数の<option>を選択する<selectbox>のテストを記載する](https://rimarimadan.hatenablog.com/entry/2024/02/23/200000)
 - [material ui の select のテスト]https://scrapbox.io/haruharu/material_ui%E3%81%AEselect%E3%81%AE%E3%83%86%E3%82%B9%E3%83%88)
 - [Testing Library で<td>要素に関するテストを書く場合にどうやって要素を探索するか](https://rimarimadan.hatenablog.com/entry/2024/03/04/200000)
+- [プロダクションビルドではカスタムデータ属性を取り除く](https://qiita.com/akameco/items/519f7e4d5442b2a9d2da#%E3%83%97%E3%83%AD%E3%83%80%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E3%83%93%E3%83%AB%E3%83%89%E3%81%A7%E3%81%AF%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%A0%E3%83%87%E3%83%BC%E3%82%BF%E5%B1%9E%E6%80%A7%E3%82%92%E5%8F%96%E3%82%8A%E9%99%A4%E3%81%8F)
 
 ### ToDo
 
